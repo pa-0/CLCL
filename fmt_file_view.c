@@ -804,7 +804,7 @@ static LRESULT CALLBACK fileview_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM
 		ListView_DeleteAllItems(GetDlgItem(hWnd, IDC_LIST_FILE));
 
 		lock = (BOOL)wParam;
-		SetWindowLong(hWnd, GWL_EXSTYLE, (lock == TRUE) ? 0 : WS_EX_ACCEPTFILES);
+		SetWindowLongPtr(hWnd, GWL_EXSTYLE, (lock == TRUE) ? 0 : WS_EX_ACCEPTFILES);
 
 		if ((hDrop = (HDROP)lParam) == NULL) {
 			break;

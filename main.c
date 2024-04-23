@@ -299,14 +299,14 @@ static BOOL set_menu_layerer(const HWND hWnd, const int alpha)
 		return FALSE;
 	}
 
-	lStyle = GetWindowLong(hWnd, GWL_EXSTYLE);
+	lStyle = GetWindowLongPtr(hWnd, GWL_EXSTYLE);
 	if (lStyle & WS_EX_LAYERED) {
 		// ä˘Ç…îºìßñæçœÇ›
 		FreeLibrary(user32_lib);
 		return TRUE;
 	}
 	lStyle |= WS_EX_LAYERED;
-	SetWindowLong(hWnd, GWL_EXSTYLE, lStyle);
+	SetWindowLongPtr(hWnd, GWL_EXSTYLE, lStyle);
 
 	// îºìßñæ
 	SetLayeredWindowAttributes(hWnd, 0, alpha, LWA_ALPHA);

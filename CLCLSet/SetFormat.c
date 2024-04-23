@@ -112,8 +112,8 @@ static BOOL dll_to_list(const HWND hDlg, const FARPROC func_get_format_header)
 	ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_HEADER), lvc.iSubItem, &lvc);
 
 	// リストビューのスタイルの設定
-	SetWindowLong(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE,
-		GetWindowLong(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE) | LVS_SHOWSELALWAYS);
+	SetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE,
+		GetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE) | LVS_SHOWSELALWAYS);
 	SendDlgItemMessage(hDlg, IDC_LIST_HEADER, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 		LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |
 		SendDlgItemMessage(hDlg, IDC_LIST_HEADER, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));
@@ -185,8 +185,8 @@ static BOOL CALLBACK select_headers_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LP
 			break;
 		}
 		// リストビューのスタイルの設定
-		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE,
-			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE) & ~LVS_SINGLESEL);
+		SetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE,
+			GetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE) & ~LVS_SINGLESEL);
 		ListView_SetItemState(GetDlgItem(hDlg, IDC_LIST_HEADER), -1, LVIS_SELECTED, LVIS_SELECTED);
 
 		lstrcpy(lib_path, (TCHAR *)lParam);
@@ -410,7 +410,7 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				SendDlgItemMessage(hDlg, IDC_EDIT_FORMAT_NAME, WM_SETTEXT, 0, (LPARAM)cmd_format);
 				*cmd_format = TEXT('\0');
 			}
-			SetWindowLong(hDlg, GWLP_USERDATA, 0);
+			SetWindowLongPtr(hDlg, GWLP_USERDATA, 0);
 			break;
 		}
 		fi = (FORMAT_INFO *)lParam;
@@ -419,7 +419,7 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SendDlgItemMessage(hDlg, IDC_EDIT_LIB_PATH, WM_SETTEXT, 0, (LPARAM)fi->lib_file_path);
 		SendDlgItemMessage(hDlg, IDC_EDIT_HEADER, WM_SETTEXT, 0, (LPARAM)fi->func_header);
 
-		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
+		SetWindowLongPtr(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -512,7 +512,7 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				break;
 			}
 
-			if ((fi = (FORMAT_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
+			if ((fi = (FORMAT_INFO *)GetWindowLongPtr(hDlg, GWLP_USERDATA)) == NULL) {
 				fi = mem_calloc(sizeof(FORMAT_INFO));
 			}
 			if (fi != NULL) {
@@ -522,7 +522,7 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				alloc_get_text(GetDlgItem(hDlg, IDC_EDIT_HEADER), &fi->func_header);
 			}
 
-			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
+			if (GetWindowLongPtr(hDlg, GWLP_USERDATA) == 0) {
 				// 新規
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_format(GetDlgItem(pWnd, IDC_LIST_FORMAT), fi, FALSE);
@@ -748,7 +748,7 @@ BOOL CALLBACK set_format_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		// D&Dを受け付ける
-		SetWindowLong(hDlg, GWL_EXSTYLE, GetWindowLong(hDlg, GWL_EXSTYLE) | WS_EX_ACCEPTFILES);
+		SetWindowLongPtr(hDlg, GWL_EXSTYLE, GetWindowLongPtr(hDlg, GWL_EXSTYLE) | WS_EX_ACCEPTFILES);
 #ifdef OP_XP_STYLE
 		// XP
 		hThemeUp = open_theme(GetDlgItem(hDlg, IDC_BUTTON_UP), L"SCROLLBAR");
@@ -777,8 +777,8 @@ BOOL CALLBACK set_format_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_FORMAT), lvc.iSubItem, &lvc);
 
 		// リストビューのスタイルの設定
-		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_FORMAT), GWL_STYLE,
-			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_FORMAT), GWL_STYLE) | LVS_SHOWSELALWAYS);
+		SetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_FORMAT), GWL_STYLE,
+			GetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_FORMAT), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_FORMAT, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 			LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |
 			SendDlgItemMessage(hDlg, IDC_LIST_FORMAT, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));

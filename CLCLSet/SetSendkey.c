@@ -82,8 +82,8 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_WINDOW), lvc.iSubItem, &lvc);
 
 		// リストビューのスタイルの設定
-		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_WINDOW), GWL_STYLE,
-			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_WINDOW), GWL_STYLE) | LVS_SHOWSELALWAYS);
+		SetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_WINDOW), GWL_STYLE,
+			GetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_WINDOW), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_WINDOW, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 			LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |
 			SendDlgItemMessage(hDlg, IDC_LIST_WINDOW, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));
@@ -94,7 +94,7 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 			// 新規追加
 			SetDlgItemInt(hDlg, IDC_EDIT_COPY_WAIT, DEFAULT_COPY_WAIT, FALSE);
 			SetDlgItemInt(hDlg, IDC_EDIT_PASTE_WAIT, DEFAULT_PASTE_WAIT, FALSE);
-			SetWindowLong(hDlg, GWLP_USERDATA, 0);
+			SetWindowLongPtr(hDlg, GWLP_USERDATA, 0);
 			break;
 		}
 		si = (SENDKEY_INFO *)lParam;
@@ -142,7 +142,7 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 		}
 		SetDlgItemInt(hDlg, IDC_EDIT_PASTE_WAIT, si->paste_wait, FALSE);
 		
-		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
+		SetWindowLongPtr(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -213,7 +213,7 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 				break;
 			}
 
-			if ((si = (SENDKEY_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
+			if ((si = (SENDKEY_INFO *)GetWindowLongPtr(hDlg, GWLP_USERDATA)) == NULL) {
 				si = mem_calloc(sizeof(SENDKEY_INFO));
 			}
 			if (si != NULL) {
@@ -242,7 +242,7 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 				si->paste_wait = GetDlgItemInt(hDlg, IDC_EDIT_PASTE_WAIT, NULL, FALSE);
 			}
 
-			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
+			if (GetWindowLongPtr(hDlg, GWLP_USERDATA) == 0) {
 				// 新規
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_sendkey(GetDlgItem(pWnd, IDC_LIST_SENDKEY), si, FALSE);
@@ -470,8 +470,8 @@ BOOL CALLBACK set_sendkey_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lPara
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_SENDKEY), lvc.iSubItem, &lvc);
 
 		// リストビューのスタイルの設定
-		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_SENDKEY), GWL_STYLE,
-			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_SENDKEY), GWL_STYLE) | LVS_SHOWSELALWAYS);
+		SetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_SENDKEY), GWL_STYLE,
+			GetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_SENDKEY), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_SENDKEY, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 			LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |
 			SendDlgItemMessage(hDlg, IDC_LIST_SENDKEY, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));

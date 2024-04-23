@@ -102,8 +102,8 @@ static BOOL CALLBACK select_tool_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARA
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_HEADER), lvc.iSubItem, &lvc);
 
 		// リストビューのスタイルの設定
-		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE,
-			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE) | LVS_SHOWSELALWAYS);
+		SetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE,
+			GetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_HEADER), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_HEADER, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 			LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |
 			SendDlgItemMessage(hDlg, IDC_LIST_HEADER, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));
@@ -774,7 +774,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 	switch (uMsg) {
 	case WM_INITDIALOG:
 		// D&Dを受け付ける
-		SetWindowLong(hDlg, GWL_EXSTYLE, GetWindowLong(hDlg, GWL_EXSTYLE) | WS_EX_ACCEPTFILES);
+		SetWindowLongPtr(hDlg, GWL_EXSTYLE, GetWindowLongPtr(hDlg, GWL_EXSTYLE) | WS_EX_ACCEPTFILES);
 #ifdef OP_XP_STYLE
 		// XP
 		hThemeUp = open_theme(GetDlgItem(hDlg, IDC_BUTTON_UP), L"SCROLLBAR");
@@ -828,7 +828,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			TreeView_Expand(GetDlgItem(hDlg, IDC_TREE_MENU), root_item, TVE_EXPAND);
 			TreeView_SelectItem(GetDlgItem(hDlg, IDC_TREE_MENU), root_item);
 
-			SetWindowLong(hDlg, GWLP_USERDATA, 0);
+			SetWindowLongPtr(hDlg, GWLP_USERDATA, 0);
 			set_enable_control(hDlg);
 			break;
 		}
@@ -869,7 +869,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		TreeView_SelectItem(GetDlgItem(hDlg, IDC_TREE_MENU), root_item);
 
 		set_enable_control(hDlg);
-		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
+		SetWindowLongPtr(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -1023,7 +1023,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 
 			TreeView_SelectItem(GetDlgItem(hDlg, IDC_TREE_MENU), NULL);
 
-			if ((ai = (ACTION_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
+			if ((ai = (ACTION_INFO *)GetWindowLongPtr(hDlg, GWLP_USERDATA)) == NULL) {
 				ai = mem_calloc(sizeof(ACTION_INFO));
 			}
 			if (ai != NULL) {
@@ -1046,7 +1046,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				ai->menu_info = get_menu_item(GetDlgItem(hDlg, IDC_TREE_MENU), root_item, &ai->menu_cnt);
 			}
 
-			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
+			if (GetWindowLongPtr(hDlg, GWLP_USERDATA) == 0) {
 				// 新規
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_action(GetDlgItem(pWnd, IDC_LIST_ACTION), ai, FALSE);
@@ -1130,7 +1130,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			// カスタムドロー
 			switch (((LPNMTVCUSTOMDRAW)lParam)->nmcd.dwDrawStage) {
 			case CDDS_PREPAINT:
-				SetWindowLong(hDlg, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW);
+				SetWindowLongPtr(hDlg, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW);
 				return TRUE;
 
 			case CDDS_ITEMPREPAINT:
@@ -1141,7 +1141,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 						((LPNMTVCUSTOMDRAW)lParam)->clrText = GetSysColor(COLOR_GRAYTEXT);
 					}
 				}
-				SetWindowLong(hDlg, DWLP_MSGRESULT, CDRF_DODEFAULT);
+				SetWindowLongPtr(hDlg, DWLP_MSGRESULT, CDRF_DODEFAULT);
 				return TRUE;
 			}
 			break;
@@ -1387,8 +1387,8 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 		ListView_InsertColumn(GetDlgItem(hDlg, IDC_LIST_ACTION), lvc.iSubItem, &lvc);
 
 		// リストビューのスタイルの設定
-		SetWindowLong(GetDlgItem(hDlg, IDC_LIST_ACTION), GWL_STYLE,
-			GetWindowLong(GetDlgItem(hDlg, IDC_LIST_ACTION), GWL_STYLE) | LVS_SHOWSELALWAYS);
+		SetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_ACTION), GWL_STYLE,
+			GetWindowLongPtr(GetDlgItem(hDlg, IDC_LIST_ACTION), GWL_STYLE) | LVS_SHOWSELALWAYS);
 		SendDlgItemMessage(hDlg, IDC_LIST_ACTION, LVM_SETEXTENDEDLISTVIEWSTYLE, 0,
 			LVS_EX_ONECLICKACTIVATE | LVS_EX_FULLROWSELECT |
 			SendDlgItemMessage(hDlg, IDC_LIST_ACTION, LVM_GETEXTENDEDLISTVIEWSTYLE, 0, 0));
@@ -1468,7 +1468,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			// カスタムドロー
 			switch (((LPNMLVCUSTOMDRAW)lParam)->nmcd.dwDrawStage) {
 			case CDDS_PREPAINT:
-				SetWindowLong(hDlg, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW);
+				SetWindowLongPtr(hDlg, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW);
 				return TRUE;
 
 			case CDDS_ITEMPREPAINT:
@@ -1476,7 +1476,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 				if (ai != NULL && ai->enable == 0) {
 					((LPNMLVCUSTOMDRAW)lParam)->clrText = GetSysColor(COLOR_GRAYTEXT);
 				}
-				SetWindowLong(hDlg, DWLP_MSGRESULT, CDRF_DODEFAULT);
+				SetWindowLongPtr(hDlg, DWLP_MSGRESULT, CDRF_DODEFAULT);
 				return TRUE;
 			}
 			break;

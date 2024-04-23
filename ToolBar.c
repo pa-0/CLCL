@@ -69,7 +69,7 @@ HWND toolbar_create(const HWND hWnd, const int id)
 			16, 16, sizeof(TBBUTTON));
 	}
 
-	SetWindowLong(hToolBar, GWL_STYLE, GetWindowLong(hToolBar, GWL_STYLE) | TBSTYLE_FLAT);
+	SetWindowLongPtr(hToolBar, GWL_STYLE, GetWindowLongPtr(hToolBar, GWL_STYLE) | TBSTYLE_FLAT);
 	SendMessage(hToolBar, TB_SETINDENT, TOOLBAR_INDENT, 0);
 
 	if (option.viewer_show_toolbar == 1) {
