@@ -87,7 +87,7 @@ static BOOL CALLBACK set_window_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 
 		if (lParam == 0) {
 			// êVãKí«â¡
-			SetWindowLong(hDlg, GWL_USERDATA, 0);
+			SetWindowLong(hDlg, GWLP_USERDATA, 0);
 			break;
 		}
 		wfi = (WINDOW_FILTER_INFO *)lParam;
@@ -99,7 +99,7 @@ static BOOL CALLBACK set_window_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		CheckDlgButton(hDlg, IDC_CHECK_FOCUS, !wfi->focus);
 		CheckDlgButton(hDlg, IDC_CHECK_PASTE, wfi->paste);
 
-		SetWindowLong(hDlg, GWL_USERDATA, lParam);
+		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -170,7 +170,7 @@ static BOOL CALLBACK set_window_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				break;
 			}
 
-			if ((wfi = (WINDOW_FILTER_INFO *)GetWindowLong(hDlg, GWL_USERDATA)) == NULL) {
+			if ((wfi = (WINDOW_FILTER_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
 				wfi = mem_calloc(sizeof(WINDOW_FILTER_INFO));
 			}
 			if (wfi != NULL) {
@@ -183,7 +183,7 @@ static BOOL CALLBACK set_window_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				wfi->paste = IsDlgButtonChecked(hDlg, IDC_CHECK_PASTE);
 			}
 
-			if (GetWindowLong(hDlg, GWL_USERDATA) == 0) {
+			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
 				// êVãK
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_window(GetDlgItem(pWnd, IDC_LIST_WINDOW), wfi, FALSE);

@@ -94,7 +94,7 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 			// êVãKí«â¡
 			SetDlgItemInt(hDlg, IDC_EDIT_COPY_WAIT, DEFAULT_COPY_WAIT, FALSE);
 			SetDlgItemInt(hDlg, IDC_EDIT_PASTE_WAIT, DEFAULT_PASTE_WAIT, FALSE);
-			SetWindowLong(hDlg, GWL_USERDATA, 0);
+			SetWindowLong(hDlg, GWLP_USERDATA, 0);
 			break;
 		}
 		si = (SENDKEY_INFO *)lParam;
@@ -142,7 +142,7 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 		}
 		SetDlgItemInt(hDlg, IDC_EDIT_PASTE_WAIT, si->paste_wait, FALSE);
 		
-		SetWindowLong(hDlg, GWL_USERDATA, lParam);
+		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -213,7 +213,7 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 				break;
 			}
 
-			if ((si = (SENDKEY_INFO *)GetWindowLong(hDlg, GWL_USERDATA)) == NULL) {
+			if ((si = (SENDKEY_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
 				si = mem_calloc(sizeof(SENDKEY_INFO));
 			}
 			if (si != NULL) {
@@ -242,7 +242,7 @@ static BOOL CALLBACK set_sendkey_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, 
 				si->paste_wait = GetDlgItemInt(hDlg, IDC_EDIT_PASTE_WAIT, NULL, FALSE);
 			}
 
-			if (GetWindowLong(hDlg, GWL_USERDATA) == 0) {
+			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
 				// êVãK
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_sendkey(GetDlgItem(pWnd, IDC_LIST_SENDKEY), si, FALSE);

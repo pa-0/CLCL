@@ -195,7 +195,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 			}
 		}
 		// tooltip info to window long
-		SetWindowLong(hWnd, GWL_USERDATA, (LPARAM)ti);
+		SetWindowLong(hWnd, GWLP_USERDATA, (LPARAM)ti);
 		break;
 
 	case WM_CLOSE:
@@ -203,7 +203,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		break;
 
 	case WM_DESTROY:
-		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWL_USERDATA)) != NULL) {
+		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWLP_USERDATA)) != NULL) {
 			if (ti->hfont != NULL) {
 				DeleteObject(ti->hfont);
 				ti->hfont = NULL;
@@ -216,7 +216,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 
 	case WM_SETTINGCHANGE:
-		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL ||
+		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL ||
 			*option.tooltip_font_name != TEXT('\0') ||
 			wParam != SPI_SETNONCLIENTMETRICS) {
 			break;
@@ -236,7 +236,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 #ifdef TOOLTIP_ANIMATE
 	case WM_PRINT:
 		// テキスト描画
-		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		// 非クライアントエリアの描画
@@ -251,7 +251,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 
 	case WM_PAINT:
 		// テキスト描画
-		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		hdc = BeginPaint(hWnd, &ps);
@@ -274,7 +274,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		KillTimer(hWnd, ID_MOUSE_TIMER);
 		ShowWindow(hWnd, SW_HIDE);
 
-		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWL_USERDATA)) != NULL && ti->buf != NULL) {
+		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWLP_USERDATA)) != NULL && ti->buf != NULL) {
 			mem_free(&ti->buf);
 		}
 		break;
@@ -288,7 +288,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 			((TOOLTIP_INFO *)lParam)->buf == NULL || *((TOOLTIP_INFO *)lParam)->buf == TEXT('\0')) {
 			break;
 		}
-		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 
@@ -319,7 +319,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 		switch (wParam) {
 		case ID_SHOW_TIMER:
 			KillTimer(hWnd, wParam);
-			if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || ti->buf == NULL) {
+			if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || ti->buf == NULL) {
 				SendMessage(hWnd, WM_TOOLTIP_HIDE, 0, 0);
 				break;
 			}
@@ -406,7 +406,7 @@ static LRESULT CALLBACK tooltip_proc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM 
 			break;
 
 		case ID_MOUSE_TIMER:
-			if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL ||
+			if ((ti = (TOOLTIP_INFO *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL ||
 				ti->hWnd == NULL || IsWindowVisible(hWnd) == FALSE) {
 				KillTimer(hWnd, wParam);
 				break;

@@ -828,7 +828,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			TreeView_Expand(GetDlgItem(hDlg, IDC_TREE_MENU), root_item, TVE_EXPAND);
 			TreeView_SelectItem(GetDlgItem(hDlg, IDC_TREE_MENU), root_item);
 
-			SetWindowLong(hDlg, GWL_USERDATA, 0);
+			SetWindowLong(hDlg, GWLP_USERDATA, 0);
 			set_enable_control(hDlg);
 			break;
 		}
@@ -869,7 +869,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		TreeView_SelectItem(GetDlgItem(hDlg, IDC_TREE_MENU), root_item);
 
 		set_enable_control(hDlg);
-		SetWindowLong(hDlg, GWL_USERDATA, lParam);
+		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -1023,7 +1023,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 
 			TreeView_SelectItem(GetDlgItem(hDlg, IDC_TREE_MENU), NULL);
 
-			if ((ai = (ACTION_INFO *)GetWindowLong(hDlg, GWL_USERDATA)) == NULL) {
+			if ((ai = (ACTION_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
 				ai = mem_calloc(sizeof(ACTION_INFO));
 			}
 			if (ai != NULL) {
@@ -1046,7 +1046,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				ai->menu_info = get_menu_item(GetDlgItem(hDlg, IDC_TREE_MENU), root_item, &ai->menu_cnt);
 			}
 
-			if (GetWindowLong(hDlg, GWL_USERDATA) == 0) {
+			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
 				// 新規
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_action(GetDlgItem(pWnd, IDC_LIST_ACTION), ai, FALSE);
@@ -1130,7 +1130,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			// カスタムドロー
 			switch (((LPNMTVCUSTOMDRAW)lParam)->nmcd.dwDrawStage) {
 			case CDDS_PREPAINT:
-				SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_NOTIFYITEMDRAW);
+				SetWindowLong(hDlg, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW);
 				return TRUE;
 
 			case CDDS_ITEMPREPAINT:
@@ -1141,7 +1141,7 @@ static BOOL CALLBACK set_action_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 						((LPNMTVCUSTOMDRAW)lParam)->clrText = GetSysColor(COLOR_GRAYTEXT);
 					}
 				}
-				SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_DODEFAULT);
+				SetWindowLong(hDlg, DWLP_MSGRESULT, CDRF_DODEFAULT);
 				return TRUE;
 			}
 			break;
@@ -1468,7 +1468,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 			// カスタムドロー
 			switch (((LPNMLVCUSTOMDRAW)lParam)->nmcd.dwDrawStage) {
 			case CDDS_PREPAINT:
-				SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_NOTIFYITEMDRAW);
+				SetWindowLong(hDlg, DWLP_MSGRESULT, CDRF_NOTIFYITEMDRAW);
 				return TRUE;
 
 			case CDDS_ITEMPREPAINT:
@@ -1476,7 +1476,7 @@ BOOL CALLBACK set_action_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPARAM lParam
 				if (ai != NULL && ai->enable == 0) {
 					((LPNMLVCUSTOMDRAW)lParam)->clrText = GetSysColor(COLOR_GRAYTEXT);
 				}
-				SetWindowLong(hDlg, DWL_MSGRESULT, CDRF_DODEFAULT);
+				SetWindowLong(hDlg, DWLP_MSGRESULT, CDRF_DODEFAULT);
 				return TRUE;
 			}
 			break;

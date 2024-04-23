@@ -431,7 +431,7 @@ static BOOL CALLBACK set_tool_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 		if (lParam == 0) {
 			// êVãKí«â¡
 			SendMessage(hDlg, WM_COMMAND, IDC_CHECK_MENU, 0);
-			SetWindowLong(hDlg, GWL_USERDATA, 0);
+			SetWindowLong(hDlg, GWLP_USERDATA, 0);
 			break;
 		}
 		ti = (TOOL_INFO *)lParam;
@@ -464,7 +464,7 @@ static BOOL CALLBACK set_tool_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 		}
 		SendMessage(hDlg, WM_COMMAND, IDC_CHECK_MENU, 0);
 
-		SetWindowLong(hDlg, GWL_USERDATA, lParam);
+		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -505,7 +505,7 @@ static BOOL CALLBACK set_tool_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 				break;
 			}
 
-			if ((ti = (TOOL_INFO *)GetWindowLong(hDlg, GWL_USERDATA)) == NULL) {
+			if ((ti = (TOOL_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
 				ti = mem_calloc(sizeof(TOOL_INFO));
 			}
 			if (ti != NULL) {
@@ -537,7 +537,7 @@ static BOOL CALLBACK set_tool_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, LPA
 					((i & HOTKEYF_WIN) ? MOD_WIN : 0);
 			}
 
-			if (GetWindowLong(hDlg, GWL_USERDATA) == 0) {
+			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
 				// êVãK
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_tool(GetDlgItem(pWnd, IDC_LIST_TOOL), ti, FALSE);

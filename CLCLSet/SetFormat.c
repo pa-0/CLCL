@@ -410,7 +410,7 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				SendDlgItemMessage(hDlg, IDC_EDIT_FORMAT_NAME, WM_SETTEXT, 0, (LPARAM)cmd_format);
 				*cmd_format = TEXT('\0');
 			}
-			SetWindowLong(hDlg, GWL_USERDATA, 0);
+			SetWindowLong(hDlg, GWLP_USERDATA, 0);
 			break;
 		}
 		fi = (FORMAT_INFO *)lParam;
@@ -419,7 +419,7 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		SendDlgItemMessage(hDlg, IDC_EDIT_LIB_PATH, WM_SETTEXT, 0, (LPARAM)fi->lib_file_path);
 		SendDlgItemMessage(hDlg, IDC_EDIT_HEADER, WM_SETTEXT, 0, (LPARAM)fi->func_header);
 
-		SetWindowLong(hDlg, GWL_USERDATA, lParam);
+		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -512,7 +512,7 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				break;
 			}
 
-			if ((fi = (FORMAT_INFO *)GetWindowLong(hDlg, GWL_USERDATA)) == NULL) {
+			if ((fi = (FORMAT_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
 				fi = mem_calloc(sizeof(FORMAT_INFO));
 			}
 			if (fi != NULL) {
@@ -522,7 +522,7 @@ static BOOL CALLBACK set_format_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				alloc_get_text(GetDlgItem(hDlg, IDC_EDIT_HEADER), &fi->func_header);
 			}
 
-			if (GetWindowLong(hDlg, GWL_USERDATA) == 0) {
+			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
 				// êVãK
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_format(GetDlgItem(pWnd, IDC_LIST_FORMAT), fi, FALSE);

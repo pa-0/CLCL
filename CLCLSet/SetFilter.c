@@ -78,7 +78,7 @@ static BOOL CALLBACK set_filter_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 			}
 			CheckDlgButton(hDlg, IDC_RADIO_ADD, 1);
 			SetDlgItemInt(hDlg, IDC_EDIT_SIZE, 0, FALSE);
-			SetWindowLong(hDlg, GWL_USERDATA, 0);
+			SetWindowLong(hDlg, GWLP_USERDATA, 0);
 			break;
 		}
 		fi = (FILTER_INFO *)lParam;
@@ -95,7 +95,7 @@ static BOOL CALLBACK set_filter_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 		EnableWindow(GetDlgItem(hDlg, IDC_CHECK_NOSAVE), IsDlgButtonChecked(hDlg, IDC_RADIO_ADD));
 		EnableWindow(GetDlgItem(hDlg, IDC_EDIT_SIZE), IsDlgButtonChecked(hDlg, IDC_RADIO_ADD));
 
-		SetWindowLong(hDlg, GWL_USERDATA, lParam);
+		SetWindowLong(hDlg, GWLP_USERDATA, lParam);
 		break;
 
 	case WM_CLOSE:
@@ -176,7 +176,7 @@ static BOOL CALLBACK set_filter_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				break;
 			}
 
-			if ((fi = (FILTER_INFO *)GetWindowLong(hDlg, GWL_USERDATA)) == NULL) {
+			if ((fi = (FILTER_INFO *)GetWindowLong(hDlg, GWLP_USERDATA)) == NULL) {
 				fi = mem_calloc(sizeof(FILTER_INFO));
 			}
 			if (fi != NULL) {
@@ -187,7 +187,7 @@ static BOOL CALLBACK set_filter_item_proc(HWND hDlg, UINT uMsg, WPARAM wParam, L
 				fi->limit_size = GetDlgItemInt(hDlg, IDC_EDIT_SIZE, NULL, FALSE);
 			}
 
-			if (GetWindowLong(hDlg, GWL_USERDATA) == 0) {
+			if (GetWindowLong(hDlg, GWLP_USERDATA) == 0) {
 				// êVãK
 				HWND pWnd = PropSheet_GetCurrentPageHwnd(GetParent(hDlg));
 				listview_set_filter(GetDlgItem(pWnd, IDC_LIST_FILTER), fi, FALSE);

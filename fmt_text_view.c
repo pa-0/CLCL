@@ -2010,7 +2010,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		SetBkMode(bf->mdc, TRANSPARENT);
 
 		// buffer info to window long
-		SetWindowLong(hWnd, GWL_USERDATA, (LPARAM)bf);
+		SetWindowLong(hWnd, GWLP_USERDATA, (LPARAM)bf);
 		SendMessage(hWnd, WM_REFLECT, 0, 0);
 
 		// 初期文字列の設定
@@ -2020,8 +2020,8 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_DESTROY:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) != NULL) {
-			SetWindowLong(hWnd, GWL_USERDATA, (LPARAM)0);
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) != NULL) {
+			SetWindowLong(hWnd, GWLP_USERDATA, (LPARAM)0);
 
 #ifdef OP_XP_STYLE
 			// XP
@@ -2046,7 +2046,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 
 	case WM_SETFOCUS:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		CreateCaret(hWnd, NULL, 0, bf->font_height);
@@ -2057,7 +2057,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_KILLFOCUS:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		HideCaret(hWnd);
@@ -2068,7 +2068,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_SIZE:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		if (wParam == SIZE_MINIMIZED) {
@@ -2103,7 +2103,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		return DLGC_WANTALLKEYS;
 
 	case WM_HSCROLL:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		get_edit_rect(hWnd, bf, &rect);
@@ -2166,7 +2166,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_VSCROLL:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		get_edit_rect(hWnd, bf, &rect);
@@ -2229,7 +2229,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_KEYDOWN:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		switch (wParam) {
@@ -2337,7 +2337,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_CHAR:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->lock == TRUE) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || bf->lock == TRUE) {
 			break;
 		}
 		if (GetKeyState(VK_CONTROL) < 0) {
@@ -2364,7 +2364,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_IME_CHAR:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->lock == TRUE) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || bf->lock == TRUE) {
 			break;
 		}
 		if (GetKeyState(VK_CONTROL) < 0) {
@@ -2381,7 +2381,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_IME_STARTCOMPOSITION:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) != NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) != NULL) {
 			LOGFONT lf;
 
 			ensure_visible(hWnd, bf);
@@ -2406,7 +2406,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		return DefWindowProc(hWnd, msg, wParam, lParam);
 
 	case WM_IME_COMPOSITION:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) != NULL &&
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) != NULL &&
 			bf->lock == FALSE && (lParam & GCS_RESULTSTR)) {
 			TCHAR *buf;
 
@@ -2439,7 +2439,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 	case WM_MOUSEMOVE:
 	case WM_LBUTTONDOWN:
 	case WM_LBUTTONUP:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		cp = bf->cp;
@@ -2476,7 +2476,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_RBUTTONDOWN:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		string_flush(bf, TRUE);
@@ -2498,7 +2498,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		if (!(wParam & MK_LBUTTON)) {
 			break;
 		}
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		string_flush(bf, TRUE);
@@ -2521,7 +2521,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		break;
 
 	case WM_PAINT:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) != NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) != NULL) {
 			PAINTSTRUCT ps;
 			HBRUSH hBrush;
 
@@ -2584,14 +2584,14 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 #ifdef OP_XP_STYLE
 	case WM_NCPAINT:
 		// XP用の背景描画
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL ||
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL ||
 			theme_draw(hWnd, (HRGN)wParam, bf->hTheme) == FALSE) {
 			return DefWindowProc(hWnd, msg, wParam, lParam);
 		}
 		break;
 
 	case WM_THEMECHANGED:
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->hModThemes == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || bf->hModThemes == NULL) {
 			break;
 		}
 		// XPテーマの変更
@@ -2602,7 +2602,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_SETTEXT:
 		// テキストを設定
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		if (wParam != 0) {
@@ -2617,7 +2617,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_GETTEXT:
 		// テキストを取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		string_flush(bf, TRUE);
@@ -2626,7 +2626,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_GETTEXTLENGTH:
 		// テキストの長さを取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return BUF_LEN;
@@ -2636,7 +2636,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		{
 			LOGFONT lf;
 
-			if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+			if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 				break;
 			}
 			if (bf->hfont != NULL) {
@@ -2659,14 +2659,14 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_GETFONT:
 		// フォントを取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return (LRESULT)bf->hfont;
 
 	case WM_CLEAR:
 		// 削除
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->lock == TRUE) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || bf->lock == TRUE) {
 			break;
 		}
 		if (bf->cp != bf->sp) {
@@ -2676,7 +2676,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_COPY:
 		// コピー
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		string_flush(bf, TRUE);
@@ -2691,7 +2691,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_CUT:
 		// 切り取り
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->lock == TRUE) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || bf->lock == TRUE) {
 			break;
 		}
 		SendMessage(hWnd, WM_COPY, 0, 0);
@@ -2700,7 +2700,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_PASTE:
 		// 貼り付け
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->lock == TRUE) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || bf->lock == TRUE) {
 			break;
 		}
 #ifdef UNICODE
@@ -2732,21 +2732,21 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_CANUNDO:
 		// UNDO可能か取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return ((bf->undo_len > 0 || bf->ip != NULL || bf->dp != NULL) ? TRUE : FALSE);
 
 	case EM_CANREDO:
 		// REDO可能か取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return (((bf->undo + bf->undo_len)->type != 0) ? TRUE : FALSE);
 
 	case EM_EMPTYUNDOBUFFER:
 		// UNDOバッファをクリア
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		undo_free(bf, 0);
@@ -2761,14 +2761,14 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_GETFIRSTVISIBLELINE:
 		// 一番上に表示されている行番号を取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return bf->pos_y;
 
 	case EM_GETLINE:
 		// 1行の文字列を取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		if (wParam < 0 || wParam >= (WPARAM)bf->line_len) {
@@ -2781,21 +2781,21 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_GETLINECOUNT:
 		// 行数取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return bf->line_len;
 
 	case EM_GETMODIFY:
 		// 変更フラグを取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return bf->modified;
 
 	case EM_GETRECT:
 		// 描画領域の取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		get_edit_rect(hWnd, bf, (RECT *)lParam);
@@ -2803,7 +2803,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_GETSEL:
 		// 選択されているインデックスを取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		i = ((bf->sp < bf->cp) ? bf->sp : bf->cp);
@@ -2818,7 +2818,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_LIMITTEXT:
 		// 入力文字数制限
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		bf->limit_len = wParam;
@@ -2829,7 +2829,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_LINEFROMCHAR:
 		// 特定文字インデックスが含まれる行番号を取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		if (wParam == -1) {
@@ -2843,7 +2843,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_LINEINDEX:
 		// 行番号の文字インデックスを取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		if (wParam == -1) {
@@ -2856,7 +2856,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_LINELENGTH:
 		// 行の長さを取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		if (wParam == -1) {
@@ -2873,7 +2873,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_LINESCROLL:
 		// 水平、垂直にスクロール
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		get_edit_rect(hWnd, bf, &rect);
@@ -2905,7 +2905,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_REPLACESEL:
 		// 選択範囲のテキストを置き換える
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		string_insert(hWnd, bf, (TCHAR *)lParam, lstrlen((TCHAR *)lParam), TRUE);
@@ -2913,7 +2913,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_SCROLL:
 		// テキストを垂直にスクロール
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		get_edit_rect(hWnd, bf, &rect);
@@ -2947,7 +2947,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_SCROLLCARET:
 		// キャレット位置にスクロール
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		ensure_visible(hWnd, bf);
@@ -2956,7 +2956,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_SETMODIFY:
 		// 変更フラグをセット
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		bf->modified = wParam;
@@ -2964,14 +2964,14 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_GETREADONLY:
 		// 読み取り専用フラグの取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return bf->lock;
 
 	case EM_SETREADONLY:
 		// 読み取り専用の設定
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		bf->lock = wParam;
@@ -2991,7 +2991,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_SETRECT:
 		// 描画領域の設定 (再描画あり)
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		SendMessage(hWnd, EM_SETRECTNP, wParam, lParam);
@@ -3000,7 +3000,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_SETRECTNP:
 		// 描画領域の設定 (再描画なし)
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		GetClientRect(hWnd, &rect);
@@ -3015,7 +3015,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_SETSEL:
 		// 選択インデックスの設定
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		string_flush(bf, TRUE);
@@ -3042,7 +3042,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_SETTABSTOPS:
 		// タブストップの設定
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		if (wParam < 0 || lParam == 0) {
@@ -3058,7 +3058,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 	case WM_UNDO:
 	case EM_UNDO:
 		// 元に戻す
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->lock == TRUE) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || bf->lock == TRUE) {
 			break;
 		}
 		undo_exec(hWnd, bf);
@@ -3066,7 +3066,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case EM_REDO:
 		// やり直し
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || bf->lock == TRUE) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || bf->lock == TRUE) {
 			break;
 		}
 		redo_exec(hWnd, bf);
@@ -3077,12 +3077,12 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 		if (lParam == 0) {
 			break;
 		}
-		*((BUFFER **)lParam) = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA);
+		*((BUFFER **)lParam) = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA);
 		break;
 
 	case WM_REFLECT:
 		// 描画情報の更新
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) != NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) != NULL) {
 			TEXTMETRIC tm;
 			HCURSOR old_cursor;
 
@@ -3112,7 +3112,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_GETWORDWRAP:
 		// 折り返しフラグの取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		i = GetWindowLong(hWnd, GWL_STYLE);
@@ -3120,7 +3120,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_SETWORDWRAP:
 		// 折り返し設定
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		bf->wordwrap = wParam;
@@ -3132,14 +3132,14 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_GETMEMSIZE:
 		// 内部メモリのサイズ取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL) {
 			break;
 		}
 		return (BUF_LEN * sizeof(TCHAR));
 
 	case WM_GETMEM:
 		// 内部メモリの取得
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		string_flush(bf, TRUE);
@@ -3148,7 +3148,7 @@ static LRESULT CALLBACK nedit_proc(const HWND hWnd, const UINT msg, const WPARAM
 
 	case WM_SETMEM:
 		// メモリを内部メモリに設定
-		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWL_USERDATA)) == NULL || lParam == 0) {
+		if ((bf = (BUFFER *)GetWindowLong(hWnd, GWLP_USERDATA)) == NULL || lParam == 0) {
 			break;
 		}
 		return string_set(hWnd, bf, (TCHAR *)lParam, wParam / sizeof(TCHAR));
