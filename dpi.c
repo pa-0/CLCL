@@ -27,10 +27,14 @@ static UINT m_nScaleFactor = 0;
 static UINT m_nScaleFactorSDA = 0;
 static PROCESS_DPI_AWARENESS m_Awareness = PROCESS_DPI_UNAWARE;
 
+typedef HRESULT (WINAPI *GETPROCESSDPIAWARENESS)(HANDLE, PROCESS_DPI_AWARENESS*);
+typedef HRESULT (WINAPI *SETPROCESSDPIAWARENESS)(PROCESS_DPI_AWARENESS);
+typedef HRESULT (WINAPI *GETDPIFORMONITOR)(HMONITOR, UINT /*MONITOR_DPI_TYPE*/, UINT*, UINT*);
+
 /* Local Function Prototypes */
-static FARPROC _GetProcessDpiAwareness;
-static FARPROC _SetProcessDpiAwareness;
-static FARPROC _GetDpiForMonitor;
+static GETPROCESSDPIAWARENESS _GetProcessDpiAwareness;
+static SETPROCESSDPIAWARENESS _SetProcessDpiAwareness;
+static GETDPIFORMONITOR _GetDpiForMonitor;
 
 
 /*
@@ -169,13 +173,13 @@ void InitDpi()
 	if ((hModThemes = LoadLibrary(TEXT("shcore.dll"))) == NULL) {
 		return;
 	}
-	if ((_GetDpiForMonitor = GetProcAddress(hModThemes, "GetDpiForMonitor")) == NULL) {
+	if ((_GetDpiForMonitor = (GETDPIFORMONITOR)GetProcAddress(hModThemes, "GetDpiForMonitor")) == NULL) {
 		return;
 	}
-	if ((_GetProcessDpiAwareness = GetProcAddress(hModThemes, "GetProcessDpiAwareness")) == NULL) {
+	if ((_GetProcessDpiAwareness = (GETPROCESSDPIAWARENESS)GetProcAddress(hModThemes, "GetProcessDpiAwareness")) == NULL) {
 		return;
 	}
-	if ((_SetProcessDpiAwareness = GetProcAddress(hModThemes, "SetProcessDpiAwareness")) == NULL) {
+	if ((_SetProcessDpiAwareness = (SETPROCESSDPIAWARENESS)GetProcAddress(hModThemes, "SetProcessDpiAwareness")) == NULL) {
 		return;
 	}
 

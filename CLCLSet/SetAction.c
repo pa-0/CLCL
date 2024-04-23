@@ -413,7 +413,7 @@ static void set_enable_control(const HWND hDlg)
 {
 	BOOL menu;
 	BOOL enable;
-	int i;
+	LRESULT i;
 
 	i = SendDlgItemMessage(hDlg, IDC_COMBO_ACTION, CB_GETCURSEL, 0, 0);
 	menu = (i == ACTION_POPUPMEMU) ? TRUE : FALSE;
